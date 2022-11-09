@@ -13,16 +13,16 @@ public class Player {
     private int mana;
     private CardInput hero;
 
+    public int getPlayerNum() {
+        return playerNum;
+    }
+
+    public void setPlayerNum(int playerNum) {
+        this.playerNum = playerNum;
+    }
+
     private int playerNum;
 
-//    public void doActions(ArrayList<ActionsInput> actions, int currActionIdx, GameInput game) {
-//        // while command does not end player's turn and not all commands were executed
-//        while(!actions.get(currActionIdx).getCommand().equals("endPlayerTurn") && currActionIdx < actions.size()) {
-//            performAction(actions.get(currActionIdx));
-//
-//            currActionIdx++;
-//        }
-//    }
     public Player(int playerNum) {
         this.playerNum = playerNum;
     }
@@ -31,6 +31,7 @@ public class Player {
     }
 
     public void addCardInHandFromDeck() {
+        System.out.println("THE CUURENT DECK IS:" + currentDeck);
         CardInput firstCardInDeck = currentDeck.get(0);
         hand.add(firstCardInDeck);
         currentDeck.remove(0);

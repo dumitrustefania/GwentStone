@@ -9,9 +9,26 @@ import play.players.Player;
 import java.util.ArrayList;
 
 public class Play {
-    private Player[] players = new Player[3];
+    protected Player[] players = new Player[3];
+    protected int gamesPlayed = 0;
+    protected ArrayNode output;
 
-    public void play(Input input, ArrayNode output) throws JsonProcessingException {
+    public ArrayNode getOutput() {
+        return output;
+    }
+
+    public void setOutput(ArrayNode output) {
+        this.output = output;
+    }
+
+    public Play(ArrayNode output) {
+        this.output = output;
+    }
+
+    public Play() {
+    }
+
+    public void play(Input input) throws JsonProcessingException {
         players[1] = new Player(1);
         players[1].setDecks(input.getPlayerOneDecks());
 
@@ -21,8 +38,9 @@ public class Play {
         ArrayList<GameInput> games = input.getGames();
 
         for(GameInput game : games) {
-            Game newGame = new Game(game);
-            newGame.startGame(this, output);
+            Game newGame = new Game(game, players, gamesPlayed, output);
+            gamesPlayed++;
+            newGame.startGame();
         }
 
 
