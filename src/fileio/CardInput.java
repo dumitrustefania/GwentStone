@@ -1,11 +1,18 @@
 package fileio;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import util.MyIntFilter;
+
 import java.util.ArrayList;
 
 public final class CardInput {
     private int mana;
-    private int attackDamage;
-    private int health;
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = MyIntFilter.class)
+    private int attackDamage = -1;
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = MyIntFilter.class)
+    private int health = -1;
     private String description;
     private ArrayList<String> colors;
     private String name;

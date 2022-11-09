@@ -3,25 +3,36 @@ import fileio.CardInput;
 
 import java.util.ArrayList;
 public final class Table {
-    private CardInput[][] table = new CardInput[4][5];
+    private ArrayList<ArrayList<CardInput>> table;
 
-    public CardInput[][] getTable() {
+    public Table() {
+        table = new ArrayList<ArrayList<CardInput>>();
+        for(int row = 0; row < 4; row++) {
+            ArrayList<CardInput> rowOnTable = new ArrayList<CardInput>();
+            table.add(rowOnTable);
+        }
+    }
+
+    public ArrayList<ArrayList<CardInput>> getTable() {
         return table;
     }
 
-    public void setTable(CardInput[][] table) {
+    public void setTable(ArrayList<ArrayList<CardInput>> table) {
         this.table = table;
     }
 
-    public CardInput[] getRow(int idx) {
-        return table[idx];
+    public ArrayList<CardInput> getRow(int idx) {
+        return table.get(idx);
     }
+
     public CardInput getCard(int row, int col) {
-        return table[row][col];
+        return table.get(row).get(col);
     }
 
     public void setCard(int row, int col, CardInput newCard) {
-        this.table[row][col] = newCard;
+        ArrayList<CardInput> rowList = table.get(row);
+        rowList.set(col, newCard);
+        table.set(row, rowList);
     }
 
 }

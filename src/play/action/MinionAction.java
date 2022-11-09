@@ -7,8 +7,8 @@ import common.Constants;
 import play.table.Table;
 
 public class MinionAction extends Action{
-    public MinionAction(ActionsInput action, Game game) {
-        super(action, game);
+    public MinionAction(Action action) {
+        super(action.action, action.game);
     }
 
     public void performAction() {

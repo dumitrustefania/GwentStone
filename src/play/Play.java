@@ -13,6 +13,14 @@ public class Play {
     protected int gamesPlayed = 0;
     protected ArrayNode output;
 
+    public int getGamesPlayed() {
+        return gamesPlayed;
+    }
+
+    public void setGamesPlayed(int gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
+    }
+
     public ArrayNode getOutput() {
         return output;
     }

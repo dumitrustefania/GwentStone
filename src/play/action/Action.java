@@ -24,8 +24,12 @@ public class Action {
             new DebugAction(this).performAction();
         }
 
-        if (Constants.MINION_ACTIONS.contains(command)) {
-            ((MinionAction)this).performAction();
+        else if (Constants.MINION_ACTIONS.contains(command)) {
+            new MinionAction(this).performAction();
+        }
+
+        else if (Constants.PLAYER_ACTIONS.contains(command)) {
+            new PlayerAction(this).performAction();
         }
     }
 }

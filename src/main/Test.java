@@ -1,5 +1,6 @@
 package main;
 
+import checker.Checker;
 import checker.CheckerConstants;
 
 import java.io.File;
@@ -32,7 +33,7 @@ public final class Test {
             String fileName = scanner.next();
             for (File file : inputDir) {
                 if (file.getName().equalsIgnoreCase(fileName)) {
-                    Main.action(file.getAbsolutePath(), CheckerConstants.OUT_FILE);
+                    Main.action(file.getName(), CheckerConstants.OUT_FILE);
                     break;
                 }
             }

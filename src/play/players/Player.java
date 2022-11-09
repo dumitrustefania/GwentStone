@@ -59,6 +59,7 @@ public class Player {
 
     public void setHero(CardInput hero) {
         this.hero = hero;
+        this.hero.setHealth(30);
     }
 
     public ArrayList<CardInput> getCurrentDeck() {

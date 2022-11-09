@@ -5,9 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.Constants;
 import fileio.ActionsInput;
+import fileio.CardInput;
 import fileio.DecksInput;
 import play.Game;
+import play.players.Player;
 import util.JSONout;
+
+import java.util.ArrayList;
 
 public class DebugAction extends Action{
     public DebugAction(Action action) {
@@ -16,28 +20,65 @@ public class DebugAction extends Action{
 
     public void performAction() throws JsonProcessingException {
         String command = action.getCommand();
+        JSONout out = new JSONout();
+        out.setCommand(command);
 
         if(command.equals(Constants.GET_DECK)) {
-            JSONout out = new JSONout();
-            out.setCommand(command);
+            out.setPlayerIdx(action.getPlayerIdx());
             out.setOutput(game.getPlayers()[action.getPlayerIdx()].getCurrentDeck());
             out.appendToArrayNode(game.getOutput());
         }
 
         if(command.equals(Constants.GET_HERO)) {
-            JSONout out = new JSONout();
-            out.setCommand(command);
-            out.setOutput(game.getCurrentPlayer().getHero());
+            out.setPlayerIdx(action.getPlayerIdx());
+            out.setOutput(game.getPlayers()[action.getPlayerIdx()].getHero());
             out.appendToArrayNode(game.getOutput());
         }
 
         if(command.equals(Constants.GET_TURN)) {
-            JSONout out = new JSONout();
-            out.setCommand(command);
             out.setOutput(game.getCurrentPlayer().getPlayerNum());
             out.appendToArrayNode(game.getOutput());
         }
 
+        if(command.equals(Constants.GET_HAND)) {
+            out.setPlayerIdx(action.getPlayerIdx());
+            out.setOutput(game.getPlayers()[action.getPlayerIdx()].getHand());
+            out.appendToArrayNode(game.getOutput());
+        }
+
+        if(command.equals(Constants.GET_MANA)) {
+            out.setPlayerIdx(action.getPlayerIdx());
+            out.setOutput(game.getPlayers()[action.getPlayerIdx()].getMana());
+            out.appendToArrayNode(game.getOutput());
+        }
+
+        if(command.equals(Constants.GET_TABLE)) {
+            out.setOutput(game.getTable().getTable());
+            out.appendToArrayNode(game.getOutput());
+        }
+
+        if(command.equals(Constants.GET_GAMES)) {
+            out.setOutput(game.getGamesPlayed());
+            out.appendToArrayNode(game.getOutput());
+        }
+
+        if(command.equals(Constants.GET_CARD)) {
+            out.setOutput(game.getTable().getCard(action.getX(), action.getY()));
+            out.appendToArrayNode(game.getOutput());
+        }
+
+        if(command.equals(Constants.GET_ENV)) {
+            out.setPlayerIdx(action.getPlayerIdx());
+
+            Player player = game.getPlayers()[action.getPlayerIdx()];
+            ArrayList<CardInput> envCards = new ArrayList<CardInput>();
+            for(CardInput card : player.getHand())
+                if(Constants.ENV_CARDS.contains(card.getName()))
+                    envCards.add(card);
+
+            out.setOutput(envCards);
+            out.appendToArrayNode(game.getOutput());
+        }
 
     }
 }
