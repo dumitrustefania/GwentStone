@@ -10,7 +10,17 @@ import fileio.Coordinates;
 
 public class JSONout {
     private String command;
+
+    public String getGameEnded() {
+        return gameEnded;
+    }
+
+    public void setGameEnded(String gameEnded) {
+        this.gameEnded = gameEnded;
+    }
+
     private Object output;
+    private String gameEnded;
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = MyIntFilter.class)
 

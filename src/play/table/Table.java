@@ -21,12 +21,17 @@ public final class Table {
         this.table = table;
     }
 
-    public ArrayList<CardInput> getRow(int idx) {
-        return table.get(idx);
-    }
-
     public CardInput getCard(int row, int col) {
         return table.get(row).get(col);
+    }
+
+    public void removeCard(CardInput card) {
+        for(ArrayList<CardInput> row : table) {
+            if(row.contains(card)) {
+                row.remove(card);
+                break;
+            }
+        }
     }
 
     public void setCard(int row, int col, CardInput newCard) {

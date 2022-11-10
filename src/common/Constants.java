@@ -83,5 +83,4 @@ public final class Constants {
     public static final String GET_WINS = "getPlayerOneWins";
     public static final ArrayList<String> DEBUG_ACTIONS = new ArrayList<String>(List.of(GET_HAND, GET_DECK, GET_TABLE, GET_TURN, GET_HERO, GET_CARD, GET_MANA, GET_ENV, GET_FROZEN, GET_GAMES, GET_WINS));
 
-
 }

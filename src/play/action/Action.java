@@ -2,8 +2,13 @@ package play.action;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import fileio.ActionsInput;
+import fileio.CardInput;
 import play.Game;
 import common.Constants;
+import play.players.Player;
+import play.table.Table;
+
+import java.util.ArrayList;
 
 public class Action {
     protected ActionsInput action;
@@ -31,5 +36,14 @@ public class Action {
         else if (Constants.PLAYER_ACTIONS.contains(command)) {
             new PlayerAction(this).performAction();
         }
+    }
+
+    public ArrayList<CardInput> getRow(int idx, Player player) {
+        int rowIdx = player.getRowsAssigned().get(idx);
+        return game.getTable().getTable().get(rowIdx);
+    }
+
+    public boolean attackedThisTurn(CardInput card) {
+        return game.getAttackedThisTurn().contains(card);
     }
 }

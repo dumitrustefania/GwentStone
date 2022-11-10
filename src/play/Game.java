@@ -18,8 +18,37 @@ import java.util.Random;
 public class Game extends Play{
     private final GameInput game;
     private Table table = new Table();
+    private boolean gameEnded = false;
+
+    public boolean isGameEnded() {
+        return gameEnded;
+    }
+
+    public void setGameEnded(boolean gameEnded) {
+        this.gameEnded = gameEnded;
+    }
+
+    private ArrayList<CardInput> frozenCards = new ArrayList<CardInput>();
+    private ArrayList<CardInput> attackedThisTurn = new ArrayList<CardInput>();
+
+    public ArrayList<CardInput> getAttackedThisTurn() {
+        return attackedThisTurn;
+    }
+
+    public void setAttackedThisTurn(ArrayList<CardInput> attackedThisTurn) {
+        this.attackedThisTurn = attackedThisTurn;
+    }
 
     private int roundsPlayed = 0;
+
+    public ArrayList<CardInput> getFrozenCards() {
+        return frozenCards;
+    }
+
+    public void setFrozenCards(ArrayList<CardInput> frozenCards) {
+        this.frozenCards = frozenCards;
+    }
+
     private int currActionIdx = 0;
 
     private Player currentPlayer;
@@ -73,7 +102,7 @@ public class Game extends Play{
             //first player's turn
             this.currentPlayer = firstPlayer;
             this.otherPlayer = secondPlayer;
-            while(currActionIdx < actions.size()) {
+            while(currActionIdx < actions.size() && !gameEnded) {
                 ActionsInput action = actions.get(currActionIdx);
                 System.out.println(action);
                 if(action.getCommand().equals(Constants.END_TURN)) {
@@ -83,12 +112,12 @@ public class Game extends Play{
                 Action newAction = new Action(action, this);
                 newAction.performAction();
                 currActionIdx++;
-                System.out.println(actions.size() + " " + currActionIdx);
         }
+            firstPlayer.unfreezeAndReinitMinions(this);
 
             this.currentPlayer = secondPlayer;
             this.otherPlayer = firstPlayer;
-            while(currActionIdx < actions.size()) {
+            while(currActionIdx < actions.size() && !gameEnded) {
                 ActionsInput action = actions.get(currActionIdx);
                 System.out.println(action);
 
@@ -99,17 +128,12 @@ public class Game extends Play{
                 Action newAction = new Action(action, this);
                 newAction.performAction();
                 currActionIdx++;
-                System.out.println(actions.size() + " " + currActionIdx);
-
             }
-//            firstPlayer.unfreeze();
-            if(currActionIdx == actions.size()) break;
-//            secondPlayer.doActions();
-//            secondPlayer.unfreeze();
+            secondPlayer.unfreezeAndReinitMinions(this);
 
+            if(gameEnded || currActionIdx == actions.size())
+                break;
         }
-
-
     }
 
     public Table getTable() {

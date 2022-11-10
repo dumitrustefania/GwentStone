@@ -37,10 +37,10 @@ public class Play {
     }
 
     public void play(Input input) throws JsonProcessingException {
-        players[1] = new Player(1);
+        players[1] = new Player(1, 1 ,0);
         players[1].setDecks(input.getPlayerOneDecks());
 
-        players[2] = new Player(2);
+        players[2] = new Player(2, 2, 3);
         players[2].setDecks(input.getPlayerTwoDecks());
 
         ArrayList<GameInput> games = input.getGames();

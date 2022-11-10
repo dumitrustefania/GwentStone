@@ -72,6 +72,7 @@ public class DebugAction extends Action{
 
             Player player = game.getPlayers()[action.getPlayerIdx()];
             ArrayList<CardInput> envCards = new ArrayList<CardInput>();
+
             for(CardInput card : player.getHand())
                 if(Constants.ENV_CARDS.contains(card.getName()))
                     envCards.add(card);
@@ -80,5 +81,14 @@ public class DebugAction extends Action{
             out.appendToArrayNode(game.getOutput());
         }
 
+        if(command.equals(Constants.GET_FROZEN)) {
+            out.setOutput(game.getFrozenCards());
+            out.appendToArrayNode(game.getOutput());
+        }
+
+        if(command.equals(Constants.GET_WINS)) {
+            out.setOutput(game.getPlayers()[1].getWins());
+            out.appendToArrayNode(game.getOutput());
+        }
     }
 }

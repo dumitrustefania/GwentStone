@@ -17,9 +17,10 @@ public class PlayerAction extends Action{
         String command = action.getCommand();
         JSONout out = new JSONout();
         out.setCommand(command);
-        out.setHandIdx(action.getHandIdx());
 
         if(command.equals(Constants.PLACE_CARD)) {
+            out.setHandIdx(action.getHandIdx());
+
             CardInput card = game.getCurrentPlayer().getHand().get(action.getHandIdx());
             Player player = game.getCurrentPlayer();
 

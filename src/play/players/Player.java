@@ -3,6 +3,8 @@ import fileio.ActionsInput;
 import fileio.CardInput;
 import fileio.DecksInput;
 import fileio.GameInput;
+import play.Game;
+import play.action.Action;
 
 import java.util.ArrayList;
 
@@ -11,7 +13,26 @@ public class Player {
     private ArrayList<CardInput> currentDeck;
     private ArrayList<CardInput> hand = new ArrayList<CardInput>();
     private int mana;
+    private ArrayList<Integer> rowsAssigned = new ArrayList<Integer>();
     private CardInput hero;
+
+    public ArrayList<Integer> getRowsAssigned() {
+        return rowsAssigned;
+    }
+
+    public void setRowsAssigned(ArrayList<Integer> rowsAssigned) {
+        this.rowsAssigned = rowsAssigned;
+    }
+
+    private int wins = 0;
+
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
 
     public int getPlayerNum() {
         return playerNum;
@@ -23,8 +44,10 @@ public class Player {
 
     private int playerNum;
 
-    public Player(int playerNum) {
+    public Player(int playerNum, int row1, int row2) {
         this.playerNum = playerNum;
+        this.rowsAssigned.add(row1);
+        this.rowsAssigned.add(row2);
     }
 
     public Player() {
@@ -35,6 +58,21 @@ public class Player {
         CardInput firstCardInDeck = currentDeck.get(0);
         hand.add(firstCardInDeck);
         currentDeck.remove(0);
+    }
+
+    public void unfreezeAndReinitMinions(Game game) {
+        ArrayList<CardInput> row1 = game.getTable().getTable().get(rowsAssigned.get(0));
+        ArrayList<CardInput> row2 = game.getTable().getTable().get(rowsAssigned.get(1));
+
+        for(CardInput card : row1) {
+            game.getAttackedThisTurn().remove(card);
+            game.getFrozenCards().remove(card);
+        }
+
+        for(CardInput card : row2) {
+            game.getAttackedThisTurn().remove(card);
+            game.getFrozenCards().remove(card);
+        }
     }
 
     public ArrayList<CardInput> getHand() {
