@@ -1,4 +1,4 @@
-package play.action;
+package play.actions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import common.Constants;
@@ -43,12 +43,16 @@ public class PlayerAction extends Action{
                 else
                     row = 1 - rowToBePlacedOn;
 
-                if(game.getTable().getTable().get(row).size() > 5)
+                System.out.println(card +" "+ row);
+                if(game.getTable().getTable().get(row).size() == 5)
                     out.setError("Cannot place card on table since row is full.");
                 else {
+                    if(card.getName().equals(Constants.WARDEN) || card.getName().equals(Constants.GOLIATH))
+                        game.getTanks().add(card);
+
                     ArrayList<CardInput> rowOnTable = game.getTable().getTable().get(row);
                     rowOnTable.add(card);
-                    player.getHand().remove(card);
+                    player.getHand().remove(action.getHandIdx());
                     player.setMana(player.getMana() - card.getMana());
                     return;
                 }

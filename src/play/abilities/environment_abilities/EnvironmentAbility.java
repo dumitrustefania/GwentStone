@@ -1,9 +1,9 @@
-package play.action.environment_abilities;
+package play.abilities.environment_abilities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import fileio.CardInput;
 import play.Game;
-import play.action.Ability;
+import play.abilities.Ability;
 import util.JSONout;
 
 import java.util.ArrayList;

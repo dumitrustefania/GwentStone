@@ -1,10 +1,10 @@
-package play.action.environment_abilities;
+package play.abilities.environment_abilities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import common.Constants;
 import fileio.CardInput;
 import play.Game;
-import play.action.Action;
+import play.actions.Action;
 import util.JSONout;
 
 import java.util.ArrayList;
@@ -24,16 +24,18 @@ public class HeartHound extends EnvironmentAbility{
                 stolenCard = card;
             }
 
-        affectedRow.remove(stolenCard);
         int placedOnFrontOrBack = Constants.ROW_TO_BE_PLACED_ON.get(stolenCard.getName());
-        ArrayList<CardInput> rowToBePlacedOn = new Action().getRow(placedOnFrontOrBack, game.getCurrentPlayer());
+        ArrayList<CardInput> rowToBePlacedOn = new Action(game).getRow(placedOnFrontOrBack, game.getCurrentPlayer());
 
         if(rowToBePlacedOn.size() == 5) {
-            out.setError("Attacked card is not of type 'Tank’.");
+            out.setError("Cannot steal enemy card since the player's row is full.");
             out.appendToArrayNode(game.getOutput());
             return;
         }
 
+        affectedRow.remove(stolenCard);
+        rowToBePlacedOn.add(stolenCard);
         game.getCurrentPlayer().getHand().remove(envCard);
+        game.getCurrentPlayer().setMana(game.getCurrentPlayer().getMana() - envCard.getMana());
     }
 }

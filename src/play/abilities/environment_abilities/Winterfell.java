@@ -1,4 +1,4 @@
-package play.action.environment_abilities;
+package play.abilities.environment_abilities;
 
 import fileio.CardInput;
 import play.Game;
@@ -19,5 +19,6 @@ public class Winterfell extends EnvironmentAbility{
         }
 
         game.getCurrentPlayer().getHand().remove(envCard);
+        game.getCurrentPlayer().setMana(game.getCurrentPlayer().getMana() - envCard.getMana());
     }
 }

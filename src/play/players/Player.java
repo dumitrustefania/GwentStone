@@ -1,21 +1,24 @@
 package play.players;
-import fileio.ActionsInput;
 import fileio.CardInput;
 import fileio.DecksInput;
-import fileio.GameInput;
 import play.Game;
-import play.action.Action;
 
 import java.util.ArrayList;
 
 public class Player {
     private DecksInput decks;
     private ArrayList<CardInput> currentDeck;
-    private ArrayList<CardInput> hand = new ArrayList<CardInput>();
+    private ArrayList<CardInput> hand;
     private int mana;
     private ArrayList<Integer> rowsAssigned = new ArrayList<Integer>();
     private CardInput hero;
 
+    public void initPlayer() {
+        currentDeck = null;
+        hand = new ArrayList<CardInput>();
+        mana = 0;
+        hero = null;
+    }
     public ArrayList<Integer> getRowsAssigned() {
         return rowsAssigned;
     }
@@ -55,12 +58,15 @@ public class Player {
 
     public void addCardInHandFromDeck() {
         System.out.println("THE CUURENT DECK IS:" + currentDeck);
+        if(currentDeck.isEmpty())
+            return;
+
         CardInput firstCardInDeck = currentDeck.get(0);
         hand.add(firstCardInDeck);
         currentDeck.remove(0);
     }
 
-    public void unfreezeAndReinitMinions(Game game) {
+    public void unfreezeAndReinitCards(Game game) {
         ArrayList<CardInput> row1 = game.getTable().getTable().get(rowsAssigned.get(0));
         ArrayList<CardInput> row2 = game.getTable().getTable().get(rowsAssigned.get(1));
 
@@ -73,6 +79,8 @@ public class Player {
             game.getAttackedThisTurn().remove(card);
             game.getFrozenCards().remove(card);
         }
+
+        game.getAttackedThisTurn().remove(hero);
     }
 
     public ArrayList<CardInput> getHand() {
@@ -113,10 +121,23 @@ public class Player {
         // Deep copy
         ArrayList<CardInput> deckCopy = new ArrayList<CardInput>();
         for(CardInput card : deck) {
-            deckCopy.add(card);
+            deckCopy.add(copyCard(card));
         }
 
         this.currentDeck = deckCopy;
+    }
+
+    public static CardInput copyCard(CardInput card) {
+        CardInput newCard = new CardInput();
+
+        newCard.setAttackDamage(card.getAttackDamage());
+        newCard.setHealth(card.getHealth());
+        newCard.setColors(card.getColors());
+        newCard.setName(card.getName());
+        newCard.setDescription(card.getDescription());
+        newCard.setMana(card.getMana());
+
+        return newCard;
     }
 
     public DecksInput getDecks() {

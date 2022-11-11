@@ -67,7 +67,7 @@ public final class Main {
         ObjectMapper objectMapper = new ObjectMapper();
         Input inputData = objectMapper.readValue(new File(CheckerConstants.TESTS_PATH + filePath1),
                 Input.class);
-        System.out.println("TESTUL MEU E " + filePath1);
+        System.out.println("TEST" + filePath1);
         ArrayNode output = objectMapper.createArrayNode();
 
         //TODO add here the entry point to your implementation

@@ -1,7 +1,7 @@
-package play.action.minion_abilities;
+package play.abilities.minion_abilities;
 
 import fileio.CardInput;
-import play.action.Ability;
+import play.abilities.Ability;
 
 public abstract class MinionAbility implements Ability {
     protected CardInput attacker, attacked;

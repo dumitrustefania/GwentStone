@@ -1,4 +1,4 @@
-package play.action.hero_abilities;
+package play.abilities.hero_abilities;
 
 import fileio.CardInput;
 import play.Game;
@@ -16,7 +16,7 @@ public class EmpressThorina extends HeroAbility{
         CardInput selectedCard = null;
         int maxHealth = 0;
         for(CardInput card : affectedRow) {
-            if(card.getAttackDamage() > maxHealth) {
+            if(card.getAttackDamage() >= maxHealth) {
                 maxHealth = card.getAttackDamage();
                 selectedCard = card;
             }

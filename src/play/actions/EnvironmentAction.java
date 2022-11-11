@@ -1,11 +1,11 @@
-package play.action;
+package play.actions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import common.Constants;
 import fileio.CardInput;
-import play.action.environment_abilities.Firestorm;
-import play.action.minion_abilities.Ripper;
-import play.players.Player;
+import play.abilities.environment_abilities.Firestorm;
+import play.abilities.environment_abilities.HeartHound;
+import play.abilities.environment_abilities.Winterfell;
 import util.JSONout;
 
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class EnvironmentAction extends Action{
         out.setAffectedRow(action.getAffectedRow());
 
         CardInput envCard = game.getCurrentPlayer().getHand().get(action.getHandIdx());
+        System.out.println("ENVCARDNAMEIS"+envCard.getName());
 
 
         if(!Constants.ENV_CARDS.contains(envCard.getName())) {
@@ -43,6 +44,8 @@ public class EnvironmentAction extends Action{
             return;
         }
 
+        System.out.println("affected row =" + action.getAffectedRow());
+        System.out.println(game.getOtherPlayer().getPlayerNum());
         if(!game.getOtherPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
             out.setError("Chosen row does not belong to the enemy.");
             out.appendToArrayNode(game.getOutput());
@@ -50,14 +53,18 @@ public class EnvironmentAction extends Action{
         }
 
         ArrayList<CardInput> affectedRow = game.getTable().getTable().get(action.getAffectedRow());
-
+        for(CardInput card:affectedRow)
+            System.out.println(card);
+        System.out.println("ENVCARDNAMEIS"+envCard.getName());
         if(envCard.getName().equals(Constants.FIRESTORM))
             new Firestorm(affectedRow, game, envCard, out).useAbility();
 
         if(envCard.getName().equals(Constants.WINTERFELL))
-            new Firestorm(affectedRow, game, envCard, out).useAbility();
+            new Winterfell(affectedRow, game, envCard, out).useAbility();
 
         if(envCard.getName().equals(Constants.HEARTHOUND))
-            new Firestorm(affectedRow, game, envCard, out).useAbility();
+            new HeartHound(affectedRow, game, envCard, out).useAbility();
+
+        System.out.println(affectedRow);
     }
 }

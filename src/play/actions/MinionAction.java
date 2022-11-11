@@ -1,16 +1,15 @@
-package play.action;
+package play.actions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import fileio.ActionsInput;
 import fileio.CardInput;
-import play.Game;
 import common.Constants;
-import play.action.minion_abilities.Ripper;
+import play.abilities.minion_abilities.Cursed;
+import play.abilities.minion_abilities.Disciple;
+import play.abilities.minion_abilities.Miraj;
+import play.abilities.minion_abilities.Ripper;
 import play.players.Player;
-import play.table.Table;
 import util.JSONout;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MinionAction extends Action{
@@ -33,6 +32,8 @@ public class MinionAction extends Action{
     public void UseAttack() throws JsonProcessingException {
         JSONout out = new JSONout();
         out.setCommand(Constants.USE_ATTACK);
+        out.setCardAttacked(action.getCardAttacked());
+        out.setCardAttacker(action.getCardAttacker());
 
         int rowAttacker = action.getCardAttacker().getX();
         int colAttacker = action.getCardAttacker().getY();
@@ -61,8 +62,8 @@ public class MinionAction extends Action{
         }
 
         //daca cartea atacata nu e tanc verific daca e vreun tanc
-        if(containsTanks() && !Constants.IS_TANK.get(cardAttacked.getName())) {
-                out.setError("Attacked card is not of type 'Tank’.");
+        if(containsTanks() && !game.getTanks().contains(cardAttacked)) {
+                out.setError("Attacked card is not of type 'Tank'.");
                 out.appendToArrayNode(game.getOutput());
                 return;
         }
@@ -73,8 +74,11 @@ public class MinionAction extends Action{
         cardAttacked.setHealth(health - damage);
 
         //check if dead
-        if(cardAttacked.getHealth() <= 0)
+        if(cardAttacked.getHealth() <= 0) {
+            game.getFrozenCards().remove(cardAttacked);
             game.getTable().removeCard(cardAttacked);
+        }
+
 
         //memorize that attacker attacked
         game.getAttackedThisTurn().add(cardAttacker);
@@ -82,7 +86,6 @@ public class MinionAction extends Action{
 
     public void UseAttackOnHero() throws JsonProcessingException {
         JSONout out = new JSONout();
-        out.setCommand(Constants.USE_ATTACK);
 
         int rowAttacker = action.getCardAttacker().getX();
         int colAttacker = action.getCardAttacker().getY();
@@ -91,12 +94,16 @@ public class MinionAction extends Action{
         CardInput hero = game.getOtherPlayer().getHero();
 
         if(frozenCheck(cardAttacker)) {
+            out.setCommand(Constants.USE_ATTACK_HERO);
+            out.setCardAttacker(action.getCardAttacker());
             out.setError("Attacker card is frozen.");
             out.appendToArrayNode(game.getOutput());
             return;
         }
 
         if(attackedThisTurn(cardAttacker)) {
+            out.setCommand(Constants.USE_ATTACK_HERO);
+            out.setCardAttacker(action.getCardAttacker());
             out.setError("Attacker card has already attacked this turn.");
             out.appendToArrayNode(game.getOutput());
             return;
@@ -104,7 +111,9 @@ public class MinionAction extends Action{
 
         //verific daca e vreun tanc
         if(containsTanks()) {
-            out.setError("Attacked card is not of type 'Tank’.");
+            out.setCommand(Constants.USE_ATTACK_HERO);
+            out.setCardAttacker(action.getCardAttacker());
+            out.setError("Attacked card is not of type 'Tank'.");
             out.appendToArrayNode(game.getOutput());
             return;
         }
@@ -116,16 +125,18 @@ public class MinionAction extends Action{
 
         //check if dead
         if(hero.getHealth() <= 0) {
-            game.setGameEnded(true);
-
-            if(game.getCurrentPlayer().getPlayerNum() == 1)
+            if(game.getCurrentPlayer().getPlayerNum() == 1) {
                 out.setGameEnded("Player one killed the enemy hero.");
-            else out.setGameEnded("Player two killed the enemy hero.");
+                game.getPlayers()[1].setWins(game.getPlayers()[1].getWins() + 1);
+            }
+            else {
+                out.setGameEnded("Player two killed the enemy hero.");
+                game.getPlayers()[2].setWins(game.getPlayers()[2].getWins() + 1);
+            }
 
             out.appendToArrayNode(game.getOutput());
             return;
         }
-
 
         //memorize that attacker attacked
         game.getAttackedThisTurn().add(cardAttacker);
@@ -133,7 +144,9 @@ public class MinionAction extends Action{
 
     public void UseCardAbility() throws JsonProcessingException {
         JSONout out = new JSONout();
-        out.setCommand(Constants.USE_ATTACK);
+        out.setCommand(Constants.CARD_USE_ABILITY);
+        out.setCardAttacker(action.getCardAttacker());
+        out.setCardAttacked(action.getCardAttacked());
 
         int rowAttacker = action.getCardAttacker().getX();
         int colAttacker = action.getCardAttacker().getY();
@@ -171,36 +184,41 @@ public class MinionAction extends Action{
             return;
         }
 
+        System.out.println(game.getCurrentPlayer().getPlayerNum());
         //daca cartea atacata nu e tanc verific daca e vreun tanc
-        if(containsTanks() && !Constants.IS_TANK.get(cardAttacked.getName())) {
-            out.setError("Attacked card is not of type 'Tank’.");
+        if(!cardAttacker.getName().equals(Constants.DISCIPLE) &&
+            containsTanks() && !game.getTanks().contains(cardAttacked)) {
+            out.setError("Attacked card is not of type 'Tank'.");
             out.appendToArrayNode(game.getOutput());
             return;
         }
-
+        System.out.println(cardAttacker.getName());
         //use the ability
         if(cardAttacker.getName().equals(Constants.RIPPER))
             new Ripper(cardAttacker, cardAttacked).useAbility();
 
         if(cardAttacker.getName().equals(Constants.MIRAJ))
-            new Ripper(cardAttacker, cardAttacked).useAbility();
+            new Miraj(cardAttacker, cardAttacked).useAbility();
 
         if(cardAttacker.getName().equals(Constants.DISCIPLE))
-            new Ripper(cardAttacker, cardAttacked).useAbility();
+            new Disciple(cardAttacker, cardAttacked).useAbility();
 
         if(cardAttacker.getName().equals(Constants.CURSED))
-            new Ripper(cardAttacker, cardAttacked).useAbility();
+            new Cursed(cardAttacker, cardAttacked).useAbility();
 
-
-        if(cardAttacked.getHealth() <= 0)
+        if(cardAttacked.getHealth() <= 0) {
             game.getTable().removeCard(cardAttacked);
+            game.getFrozenCards().remove(cardAttacked);
+        }
+
         //memorize that attacker attacked
         game.getAttackedThisTurn().add(cardAttacker);
     }
 
-    public static boolean TankExistsOnRow(ArrayList <CardInput> row) {
+    public boolean TankExistsOnRow(ArrayList <CardInput> row) {
         for (CardInput card : row)
-            return Constants.IS_TANK.get(card.getName());
+            if(game.getTanks().contains(card))
+                return true;
         return false;
         }
     public boolean frozenCheck(CardInput card) {

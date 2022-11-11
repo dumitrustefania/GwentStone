@@ -4,28 +4,21 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import fileio.ActionsInput;
 import fileio.CardInput;
 import fileio.GameInput;
-import play.action.Action;
+import play.actions.Action;
 import play.players.Player;
 import common.Constants;
 import play.table.Table;
-import util.RandomInstance;
 
-import javax.xml.stream.events.EndDocument;
-import java.lang.management.PlatformLoggingMXBean;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 public class Game extends Play{
     private final GameInput game;
     private Table table = new Table();
-    private boolean gameEnded = false;
+    private ArrayList<CardInput> tanks = new ArrayList<CardInput>();
 
-    public boolean isGameEnded() {
-        return gameEnded;
-    }
-
-    public void setGameEnded(boolean gameEnded) {
-        this.gameEnded = gameEnded;
+    public ArrayList<CardInput> getTanks() {
+        return tanks;
     }
 
     private ArrayList<CardInput> frozenCards = new ArrayList<CardInput>();
@@ -35,18 +28,10 @@ public class Game extends Play{
         return attackedThisTurn;
     }
 
-    public void setAttackedThisTurn(ArrayList<CardInput> attackedThisTurn) {
-        this.attackedThisTurn = attackedThisTurn;
-    }
-
     private int roundsPlayed = 0;
 
     public ArrayList<CardInput> getFrozenCards() {
         return frozenCards;
-    }
-
-    public void setFrozenCards(ArrayList<CardInput> frozenCards) {
-        this.frozenCards = frozenCards;
     }
 
     private int currActionIdx = 0;
@@ -64,10 +49,8 @@ public class Game extends Play{
     public void startGame() throws JsonProcessingException {
         players[1].setCurrentDeck(game.getStartGame().getPlayerOneDeckIdx());
         players[2].setCurrentDeck(game.getStartGame().getPlayerTwoDeckIdx());
-//        System.out.println("DECKKKK"+ players[2].getCurrentDeck());
+
         int seed = game.getStartGame().getShuffleSeed();
-//        Random rnd = RandomInstance.get().getRnd();
-//        rnd.setSeed(seed);
 
         Collections.shuffle(players[1].getCurrentDeck(), new Random(seed));
         Collections.shuffle(players[2].getCurrentDeck(), new Random(seed));
@@ -102,7 +85,7 @@ public class Game extends Play{
             //first player's turn
             this.currentPlayer = firstPlayer;
             this.otherPlayer = secondPlayer;
-            while(currActionIdx < actions.size() && !gameEnded) {
+            while(currActionIdx < actions.size()) {
                 ActionsInput action = actions.get(currActionIdx);
                 System.out.println(action);
                 if(action.getCommand().equals(Constants.END_TURN)) {
@@ -113,11 +96,11 @@ public class Game extends Play{
                 newAction.performAction();
                 currActionIdx++;
         }
-            firstPlayer.unfreezeAndReinitMinions(this);
+            firstPlayer.unfreezeAndReinitCards(this);
 
             this.currentPlayer = secondPlayer;
             this.otherPlayer = firstPlayer;
-            while(currActionIdx < actions.size() && !gameEnded) {
+            while(currActionIdx < actions.size()) {
                 ActionsInput action = actions.get(currActionIdx);
                 System.out.println(action);
 
@@ -129,10 +112,13 @@ public class Game extends Play{
                 newAction.performAction();
                 currActionIdx++;
             }
-            secondPlayer.unfreezeAndReinitMinions(this);
+            secondPlayer.unfreezeAndReinitCards(this);
 
-            if(gameEnded || currActionIdx == actions.size())
+            if(currActionIdx == actions.size())
                 break;
+
+//            frozenCards.clear();
+//            attackedThisTurn.clear();
         }
     }
 

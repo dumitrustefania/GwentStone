@@ -34,10 +34,4 @@ public final class Table {
         }
     }
 
-    public void setCard(int row, int col, CardInput newCard) {
-        ArrayList<CardInput> rowList = table.get(row);
-        rowList.set(col, newCard);
-        table.set(row, rowList);
-    }
-
 }

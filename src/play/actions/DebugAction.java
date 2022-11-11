@@ -1,13 +1,8 @@
-package play.action;
+package play.actions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import common.Constants;
-import fileio.ActionsInput;
 import fileio.CardInput;
-import fileio.DecksInput;
-import play.Game;
 import play.players.Player;
 import util.JSONout;
 
@@ -83,11 +78,17 @@ public class DebugAction extends Action{
 
         if(command.equals(Constants.GET_FROZEN)) {
             out.setOutput(game.getFrozenCards());
+            System.out.println(game.getFrozenCards());
             out.appendToArrayNode(game.getOutput());
         }
 
-        if(command.equals(Constants.GET_WINS)) {
+        if(command.equals(Constants.GET_WINS_ONE)) {
             out.setOutput(game.getPlayers()[1].getWins());
+            out.appendToArrayNode(game.getOutput());
+        }
+
+        if(command.equals(Constants.GET_WINS_TWO)) {
+            out.setOutput(game.getPlayers()[2].getWins());
             out.appendToArrayNode(game.getOutput());
         }
     }

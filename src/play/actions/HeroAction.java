@@ -1,13 +1,12 @@
-package play.action;
+package play.actions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import common.Constants;
 import fileio.CardInput;
-import play.action.environment_abilities.Firestorm;
-import play.action.hero_abilities.EmpressThorina;
-import play.action.hero_abilities.GeneralKocioraw;
-import play.action.hero_abilities.KingMudface;
-import play.action.hero_abilities.LordRoyce;
+import play.abilities.hero_abilities.EmpressThorina;
+import play.abilities.hero_abilities.GeneralKocioraw;
+import play.abilities.hero_abilities.KingMudface;
+import play.abilities.hero_abilities.LordRoyce;
 import util.JSONout;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class HeroAction extends Action{
         }
 
         ArrayList<CardInput> affectedRow = game.getTable().getTable().get(action.getAffectedRow());
-
+        System.out.println(hero.getName());
         if(hero.getName().equals(Constants.LORD)) {
             if(!game.getOtherPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
                 out.setError("Selected row does not belong to the enemy.");
@@ -87,5 +86,6 @@ public class HeroAction extends Action{
         }
 
         game.getAttackedThisTurn().add(hero);
+        game.getCurrentPlayer().setMana(game.getCurrentPlayer().getMana() - hero.getMana());
     }
 }

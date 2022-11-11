@@ -38,5 +38,6 @@ public final class Test {
                 }
             }
         }
+        Checker.calculateScore();
     }
 }

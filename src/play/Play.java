@@ -37,29 +37,23 @@ public class Play {
     }
 
     public void play(Input input) throws JsonProcessingException {
-        players[1] = new Player(1, 1 ,0);
+        players[1] = new Player(1, 2 ,3);
         players[1].setDecks(input.getPlayerOneDecks());
 
-        players[2] = new Player(2, 2, 3);
+        players[2] = new Player(2, 1, 0);
         players[2].setDecks(input.getPlayerTwoDecks());
 
         ArrayList<GameInput> games = input.getGames();
 
         for(GameInput game : games) {
-            Game newGame = new Game(game, players, gamesPlayed, output);
+            System.out.println("NEW GAMEEEEEEEEEEE");
+            players[1].initPlayer();
+            players[2].initPlayer();
+
             gamesPlayed++;
+            Game newGame = new Game(game, players, gamesPlayed, output);
             newGame.startGame();
         }
-
-
-
-//        System.out.println(input);
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        String smallOutput = objectMapper.writeValueAsString(inputData);
-//        output.add(smallOutput);
-//
-//        System.out.println(output);
     }
 
     public Player[] getPlayers() {

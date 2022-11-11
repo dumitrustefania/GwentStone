@@ -1,7 +1,6 @@
-package play.action.environment_abilities;
+package play.abilities.environment_abilities;
 
 import fileio.CardInput;
-import jdk.security.jarsigner.JarSigner;
 import play.Game;
 import util.JSONout;
 
@@ -14,9 +13,17 @@ public class Firestorm extends EnvironmentAbility{
 
     @Override
     public void useAbility() {
-        for(CardInput card: affectedRow)
+        for (int i = affectedRow.size() - 1; i >= 0 ; i--){
+            CardInput card = affectedRow.get(i);
             card.setHealth(card.getHealth() - 1);
+            if(card.getHealth() <= 0) {
+                affectedRow.remove(card);
+                game.getFrozenCards().remove(card);
+            }
+
+        }
 
         game.getCurrentPlayer().getHand().remove(envCard);
+        game.getCurrentPlayer().setMana(game.getCurrentPlayer().getMana() - envCard.getMana());
     }
 }

@@ -1,4 +1,4 @@
-package play.action.minion_abilities;
+package play.abilities.minion_abilities;
 
 import fileio.CardInput;
 

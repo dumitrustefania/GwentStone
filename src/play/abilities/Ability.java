@@ -1,4 +1,4 @@
-package play.action;
+package play.abilities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 

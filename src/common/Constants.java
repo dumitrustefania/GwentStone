@@ -28,17 +28,6 @@ public final class Constants {
         put(WARDEN, 0);
     }};
 
-    public static final HashMap<String, Boolean> IS_TANK = new HashMap<>() {{
-        put(SENTINEL, false);
-        put(BERSERKER, false);
-        put(CURSED, false);
-        put(DISCIPLE, false);
-        put(RIPPER, false);
-        put(MIRAJ, false);
-        put(GOLIATH, true);
-        put(WARDEN, true);
-    }};
-
     public static final String FIRESTORM = "Firestorm";
     public static final String WINTERFELL = "Winterfell";
     public static final String HEARTHOUND = "Heart Hound";
@@ -80,7 +69,9 @@ public final class Constants {
     public static final String GET_ENV = "getEnvironmentCardsInHand";
     public static final String GET_FROZEN = "getFrozenCardsOnTable";
     public static final String GET_GAMES = "getTotalGamesPlayed";
-    public static final String GET_WINS = "getPlayerOneWins";
-    public static final ArrayList<String> DEBUG_ACTIONS = new ArrayList<String>(List.of(GET_HAND, GET_DECK, GET_TABLE, GET_TURN, GET_HERO, GET_CARD, GET_MANA, GET_ENV, GET_FROZEN, GET_GAMES, GET_WINS));
+    public static final String GET_WINS_ONE = "getPlayerOneWins";
+    public static final String GET_WINS_TWO = "getPlayerTwoWins";
+
+    public static final ArrayList<String> DEBUG_ACTIONS = new ArrayList<String>(List.of(GET_HAND, GET_DECK, GET_TABLE, GET_TURN, GET_HERO, GET_CARD, GET_MANA, GET_ENV, GET_FROZEN, GET_GAMES, GET_WINS_ONE, GET_WINS_TWO));
 
 }

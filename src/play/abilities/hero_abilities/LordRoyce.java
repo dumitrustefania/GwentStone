@@ -1,4 +1,4 @@
-package play.action.hero_abilities;
+package play.abilities.hero_abilities;
 
 import fileio.CardInput;
 import play.Game;
@@ -13,10 +13,11 @@ public class LordRoyce extends HeroAbility{
 
     @Override
     public void useAbility() {
+        System.out.println(affectedRow);
         CardInput selectedCard = null;
         int maxDamage = 0;
         for(CardInput card : affectedRow) {
-            if(card.getAttackDamage() > maxDamage) {
+            if(card.getAttackDamage() >= maxDamage) {
                 maxDamage = card.getAttackDamage();
                 selectedCard = card;
             }

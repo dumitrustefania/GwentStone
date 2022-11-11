@@ -1,7 +1,6 @@
-package play.action.minion_abilities;
+package play.abilities.minion_abilities;
 
 import fileio.CardInput;
-import play.action.Ability;
 
 public class Ripper extends MinionAbility {
     public Ripper(CardInput attacker, CardInput attacked) {
@@ -10,7 +9,7 @@ public class Ripper extends MinionAbility {
 
     @Override
     public void useAbility() {
-        attacked.setHealth(attacked.getHealth() - 2);
+        attacked.setAttackDamage(Math.max(0, attacked.getAttackDamage() - 2));
     }
 }
 
