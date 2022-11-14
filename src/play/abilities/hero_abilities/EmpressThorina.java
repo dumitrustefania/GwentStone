@@ -5,9 +5,11 @@ import play.Game;
 
 import java.util.ArrayList;
 
-public class EmpressThorina extends HeroAbility{
-
-    public EmpressThorina(ArrayList<CardInput> affectedRow, Game game) {
+/**
+ *
+ */
+public final class EmpressThorina extends HeroAbility {
+    public EmpressThorina(final ArrayList<CardInput> affectedRow, final Game game) {
         super(affectedRow, game);
     }
 
@@ -15,8 +17,8 @@ public class EmpressThorina extends HeroAbility{
     public void useAbility() {
         CardInput selectedCard = null;
         int maxHealth = 0;
-        for(CardInput card : affectedRow) {
-            if(card.getAttackDamage() >= maxHealth) {
+        for (CardInput card : affectedRow) {
+            if (card.getAttackDamage() >= maxHealth) {
                 maxHealth = card.getAttackDamage();
                 selectedCard = card;
             }

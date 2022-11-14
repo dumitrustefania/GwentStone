@@ -1,7 +1,7 @@
 package play.actions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import common.Constants;
+import util.Constants;
 import fileio.CardInput;
 import play.abilities.hero_abilities.EmpressThorina;
 import play.abilities.hero_abilities.GeneralKocioraw;
@@ -11,41 +11,51 @@ import util.JSONout;
 
 import java.util.ArrayList;
 
-public class HeroAction extends Action{
-    public HeroAction(Action action) {
+/**
+ *
+ */
+public final class HeroAction extends Action {
+    public HeroAction(final Action action) {
         super(action.action, action.game);
     }
 
+    /**
+     * @throws JsonProcessingException
+     */
     public void performAction() throws JsonProcessingException {
         String command = action.getCommand();
 
-        if(command.equals(Constants.HERO_USE_ABILITY))
-            this.UseCardAbility();
+        if (command.equals(Constants.HERO_USE_ABILITY)) {
+            this.useCardAbility();
+        }
     }
 
-    public void UseCardAbility() throws JsonProcessingException {
+    /**
+     * @throws JsonProcessingException
+     */
+    public void useCardAbility() throws JsonProcessingException {
         JSONout out = new JSONout();
         out.setCommand(action.getCommand());
         out.setAffectedRow(action.getAffectedRow());
 
         CardInput hero = game.getCurrentPlayer().getHero();
 
-        if(hero.getMana() > game.getCurrentPlayer().getMana()) {
+        if (hero.getMana() > game.getCurrentPlayer().getMana()) {
             out.setError("Not enough mana to use hero's ability.");
             out.appendToArrayNode(game.getOutput());
             return;
         }
 
-        if(attackedThisTurn(hero)) {
+        if (attackedThisTurn(hero)) {
             out.setError("Hero has already attacked this turn.");
             out.appendToArrayNode(game.getOutput());
             return;
         }
 
         ArrayList<CardInput> affectedRow = game.getTable().getTable().get(action.getAffectedRow());
-        System.out.println(hero.getName());
-        if(hero.getName().equals(Constants.LORD)) {
-            if(!game.getOtherPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
+
+        if (hero.getName().equals(Constants.LORD)) {
+            if (!game.getOtherPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
                 out.setError("Selected row does not belong to the enemy.");
                 out.appendToArrayNode(game.getOutput());
                 return;
@@ -55,8 +65,8 @@ public class HeroAction extends Action{
         }
 
 
-        if(hero.getName().equals(Constants.EMPRESS)) {
-            if(!game.getOtherPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
+        if (hero.getName().equals(Constants.EMPRESS)) {
+            if (!game.getOtherPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
                 out.setError("Selected row does not belong to the enemy.");
                 out.appendToArrayNode(game.getOutput());
                 return;
@@ -65,8 +75,8 @@ public class HeroAction extends Action{
             new EmpressThorina(affectedRow, game).useAbility();
         }
 
-        if(hero.getName().equals(Constants.KING)) {
-            if(!game.getCurrentPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
+        if (hero.getName().equals(Constants.KING)) {
+            if (!game.getCurrentPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
                 out.setError("Selected row does not belong to the current player.");
                 out.appendToArrayNode(game.getOutput());
                 return;
@@ -75,8 +85,8 @@ public class HeroAction extends Action{
             new KingMudface(affectedRow, game).useAbility();
         }
 
-        if(hero.getName().equals(Constants.GENERAL)) {
-            if(!game.getCurrentPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
+        if (hero.getName().equals(Constants.GENERAL)) {
+            if (!game.getCurrentPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
                 out.setError("Selected row does not belong to the current player.");
                 out.appendToArrayNode(game.getOutput());
                 return;

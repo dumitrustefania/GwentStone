@@ -2,8 +2,11 @@ package play.abilities.minion_abilities;
 
 import fileio.CardInput;
 
-public class Miraj extends MinionAbility{
-    public Miraj(CardInput attacker, CardInput attacked) {
+/**
+ *
+ */
+public final class Miraj extends MinionAbility {
+    public Miraj(final CardInput attacker, final CardInput attacked) {
         super(attacker, attacked);
     }
 

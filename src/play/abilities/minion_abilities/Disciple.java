@@ -2,8 +2,11 @@ package play.abilities.minion_abilities;
 
 import fileio.CardInput;
 
-public class Disciple extends MinionAbility{
-    public Disciple(CardInput attacker, CardInput attacked) {
+/**
+ *
+ */
+public final class Disciple extends MinionAbility {
+    public Disciple(final CardInput attacker, final CardInput attacked) {
         super(attacker, attacked);
     }
 

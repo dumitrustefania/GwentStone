@@ -2,8 +2,11 @@ package play.abilities.minion_abilities;
 
 import fileio.CardInput;
 
-public class Cursed extends MinionAbility{
-    public Cursed(CardInput attacker, CardInput attacked) {
+/**
+ *
+ */
+public final class Cursed extends MinionAbility {
+    public Cursed(final CardInput attacker, final CardInput attacked) {
         super(attacker, attacked);
     }
 

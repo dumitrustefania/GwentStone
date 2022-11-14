@@ -2,8 +2,11 @@ package play.abilities.minion_abilities;
 
 import fileio.CardInput;
 
-public class Ripper extends MinionAbility {
-    public Ripper(CardInput attacker, CardInput attacked) {
+/**
+ *
+ */
+public final class Ripper extends MinionAbility {
+    public Ripper(final CardInput attacker, final CardInput attacked) {
         super(attacker, attacked);
     }
 
@@ -12,4 +15,3 @@ public class Ripper extends MinionAbility {
         attacked.setAttackDamage(Math.max(0, attacked.getAttackDamage() - 2));
     }
 }
-

@@ -5,9 +5,11 @@ import play.Game;
 
 import java.util.ArrayList;
 
-public class LordRoyce extends HeroAbility{
-
-    public LordRoyce(ArrayList<CardInput> affectedRow, Game game) {
+/**
+ *
+ */
+public final class LordRoyce extends HeroAbility {
+    public LordRoyce(final ArrayList<CardInput> affectedRow, final Game game) {
         super(affectedRow, game);
     }
 
@@ -16,8 +18,8 @@ public class LordRoyce extends HeroAbility{
         System.out.println(affectedRow);
         CardInput selectedCard = null;
         int maxDamage = 0;
-        for(CardInput card : affectedRow) {
-            if(card.getAttackDamage() >= maxDamage) {
+        for (CardInput card : affectedRow) {
+            if (card.getAttackDamage() >= maxDamage) {
                 maxDamage = card.getAttackDamage();
                 selectedCard = card;
             }
@@ -26,3 +28,4 @@ public class LordRoyce extends HeroAbility{
         game.getFrozenCards().add(selectedCard);
     }
 }
+

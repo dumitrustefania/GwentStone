@@ -6,16 +6,22 @@ import util.JSONout;
 
 import java.util.ArrayList;
 
-public class Winterfell extends EnvironmentAbility{
-    public Winterfell(ArrayList<CardInput> affectedRow, Game game, CardInput envCard, JSONout out) {
+/**
+ *
+ */
+public final class Winterfell extends EnvironmentAbility {
+    public Winterfell(final ArrayList<CardInput> affectedRow, final Game game,
+                      final CardInput envCard, final JSONout out) {
         super(affectedRow, game, envCard, out);
     }
 
+    //comm
     @Override
     public void useAbility() {
-        for(CardInput card: affectedRow) {
-            if(!game.getFrozenCards().contains(card))
+        for (CardInput card : affectedRow) {
+            if (!game.getFrozenCards().contains(card)) {
                 game.getFrozenCards().add(card);
+            }
         }
 
         game.getCurrentPlayer().getHand().remove(envCard);

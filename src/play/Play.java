@@ -1,43 +1,28 @@
 package play;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import util.Constants;
 import fileio.GameInput;
 import fileio.Input;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import play.players.Player;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class Play {
-    protected Player[] players = new Player[3];
+    protected Player[] players = new Player[Constants.NUM_PLAYERS + 1];
     protected int gamesPlayed = 0;
     protected ArrayNode output;
 
-    public int getGamesPlayed() {
-        return gamesPlayed;
-    }
-
-    public void setGamesPlayed(int gamesPlayed) {
-        this.gamesPlayed = gamesPlayed;
-    }
-
-    public ArrayNode getOutput() {
-        return output;
-    }
-
-    public void setOutput(ArrayNode output) {
-        this.output = output;
-    }
-
-    public Play(ArrayNode output) {
-        this.output = output;
-    }
-
-    public Play() {
-    }
-
-    public void play(Input input) throws JsonProcessingException {
-        players[1] = new Player(1, 2 ,3);
+    /**
+     * @param input
+     * @throws JsonProcessingException
+     */
+    public void play(final Input input) throws JsonProcessingException {
+        players[1] = new Player(1, 2, 3);
         players[1].setDecks(input.getPlayerOneDecks());
 
         players[2] = new Player(2, 1, 0);
@@ -45,8 +30,7 @@ public class Play {
 
         ArrayList<GameInput> games = input.getGames();
 
-        for(GameInput game : games) {
-            System.out.println("NEW GAMEEEEEEEEEEE");
+        for (GameInput game : games) {
             players[1].initPlayer();
             players[2].initPlayer();
 
@@ -56,11 +40,26 @@ public class Play {
         }
     }
 
-    public Player[] getPlayers() {
-        return players;
+    public Play(final ArrayNode output) {
+        this.output = output;
     }
 
-    public void setPlayers(Player[] players) {
-        this.players = players;
+    public Play() {
+    }
+
+    public final int getGamesPlayed() {
+        return gamesPlayed;
+    }
+
+    public final ArrayNode getOutput() {
+        return output;
+    }
+
+    public final void setOutput(final ArrayNode output) {
+        this.output = output;
+    }
+
+    public final Player[] getPlayers() {
+        return players;
     }
 }

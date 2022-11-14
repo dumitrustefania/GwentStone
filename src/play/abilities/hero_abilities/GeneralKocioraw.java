@@ -5,15 +5,18 @@ import play.Game;
 
 import java.util.ArrayList;
 
-public class GeneralKocioraw extends HeroAbility{
-
-    public GeneralKocioraw(ArrayList<CardInput> affectedRow, Game game) {
+/**
+ *
+ */
+public final class GeneralKocioraw extends HeroAbility {
+    public GeneralKocioraw(final ArrayList<CardInput> affectedRow, final Game game) {
         super(affectedRow, game);
     }
 
     @Override
     public void useAbility() {
-        for(CardInput card : affectedRow)
+        for (CardInput card : affectedRow) {
             card.setAttackDamage(card.getAttackDamage() + 1);
+        }
     }
 }

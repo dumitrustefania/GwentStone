@@ -1,49 +1,62 @@
 package util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import fileio.Coordinates;
 
+/**
+ *
+ */
 public class JSONout {
     private String command;
+    private Object output;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = MyIntFilter.class)
+
+    private int playerIdx = -1;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = MyIntFilter.class)
+
+    private int handIdx = -1;
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = MyIntFilter.class)
+
+    private int affectedRow = -1;
+    private String gameEnded;
+    private String error;
+    private Coordinates cardAttacker;
+    private Coordinates cardAttacked;
+
+    public JSONout(final String command, final Object output) {
+        this.command = command;
+        this.output = output;
+    }
+    public JSONout() {
+    }
+
+    /**
+     * @param output
+     */
+    public void appendToArrayNode(final ArrayNode output) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        JsonNode node = objectMapper.valueToTree(this);
+        output.add(node);
+    }
 
     public String getGameEnded() {
         return gameEnded;
     }
 
-    public void setGameEnded(String gameEnded) {
+    public void setGameEnded(final String gameEnded) {
         this.gameEnded = gameEnded;
     }
-
-    private Object output;
-    private String gameEnded;
-
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = MyIntFilter.class)
-
-    private int playerIdx = -1;
-
-
-    private String error;
-
-
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = MyIntFilter.class)
-
-    private int handIdx = -1;
-    private Coordinates cardAttacker;
-    private Coordinates cardAttacked;
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = MyIntFilter.class)
-
-    private int affectedRow = -1;
 
     public int getHandIdx() {
         return handIdx;
     }
 
-    public void setHandIdx(int handIdx) {
+    public void setHandIdx(final int handIdx) {
         this.handIdx = handIdx;
     }
 
@@ -51,7 +64,7 @@ public class JSONout {
         return cardAttacker;
     }
 
-    public void setCardAttacker(Coordinates cardAttacker) {
+    public void setCardAttacker(final Coordinates cardAttacker) {
         this.cardAttacker = cardAttacker;
     }
 
@@ -59,7 +72,7 @@ public class JSONout {
         return cardAttacked;
     }
 
-    public void setCardAttacked(Coordinates cardAttacked) {
+    public void setCardAttacked(final Coordinates cardAttacked) {
         this.cardAttacked = cardAttacked;
     }
 
@@ -67,7 +80,7 @@ public class JSONout {
         return affectedRow;
     }
 
-    public void setAffectedRow(int affectedRow) {
+    public void setAffectedRow(final int affectedRow) {
         this.affectedRow = affectedRow;
     }
 
@@ -75,7 +88,7 @@ public class JSONout {
         return playerIdx;
     }
 
-    public void setPlayerIdx(int playerIdx) {
+    public void setPlayerIdx(final int playerIdx) {
         this.playerIdx = playerIdx;
     }
 
@@ -83,7 +96,7 @@ public class JSONout {
         return error;
     }
 
-    public void setError(String error) {
+    public void setError(final String error) {
         this.error = error;
     }
 
@@ -91,30 +104,7 @@ public class JSONout {
         return command;
     }
 
-    public JSONout(String command, Object output) {
-        this.command = command;
-        this.output = output;
-    }
-
-    public JSONout() {
-    }
-
-    public void appendToArrayNode(ArrayNode output) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper = JsonMapper.builder().
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-//        ObjectMapper objectMapper = JsonMapper.builder()
-//                .configOverride(Integer.class)
-//                .setInclude(JsonInclude.Value.empty()
-//                        .withValueInclusion(JsonInclude.Include.CUSTOM)
-//                        .withValueFilter(MyIntFilter.class)
-//                ).build();
-        
-        JsonNode node = objectMapper.valueToTree(this);
-        output.add(node);
-    }
-
-    public void setCommand(String command) {
+    public void setCommand(final String command) {
         this.command = command;
     }
 
@@ -122,7 +112,7 @@ public class JSONout {
         return output;
     }
 
-    public void setOutput(Object output) {
+    public void setOutput(final Object output) {
         this.output = output;
     }
 }
