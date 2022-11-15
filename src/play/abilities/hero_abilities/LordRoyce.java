@@ -15,7 +15,6 @@ public final class LordRoyce extends HeroAbility {
 
     @Override
     public void useAbility() {
-        System.out.println(affectedRow);
         CardInput selectedCard = null;
         int maxDamage = 0;
         for (CardInput card : affectedRow) {

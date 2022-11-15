@@ -86,7 +86,6 @@ public final class DebugAction extends Action {
 
         if (command.equals(Constants.GET_FROZEN)) {
             out.setOutput(game.getFrozenCards());
-            System.out.println(game.getFrozenCards());
             out.appendToArrayNode(game.getOutput());
         }
 
