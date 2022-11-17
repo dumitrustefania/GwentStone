@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public final class MinionAction extends Action {
     public MinionAction(final Action action) {
-        super(action.action, action.game);
+        super(action.action, action.match);
     }
 
     /**
@@ -50,34 +50,34 @@ public final class MinionAction extends Action {
 
         int rowAttacker = action.getCardAttacker().getX();
         int colAttacker = action.getCardAttacker().getY();
-        CardInput cardAttacker = game.getTable().getCard(rowAttacker, colAttacker);
+        CardInput cardAttacker = match.getTable().getCard(rowAttacker, colAttacker);
 
         int rowAttacked = action.getCardAttacked().getX();
         int colAttacked = action.getCardAttacked().getY();
-        CardInput cardAttacked = game.getTable().getCard(rowAttacked, colAttacked);
+        CardInput cardAttacked = match.getTable().getCard(rowAttacked, colAttacked);
 
         if (frozenCheck(cardAttacker)) {
             out.setError("Attacker card is frozen.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
         if (attackedThisTurn(cardAttacker)) {
             out.setError("Attacker card has already attacked this turn.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
-        if (!cardBelongsToPlayer(cardAttacked, game.getOtherPlayer())) {
+        if (!cardBelongsToPlayer(cardAttacked, match.getOtherPlayer())) {
             out.setError("Attacked card does not belong to the enemy.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
         //daca cartea atacata nu e tanc verific daca e vreun tanc
-        if (containsTanks() && !game.getTanks().contains(cardAttacked)) {
+        if (containsTanks() && !match.getTanks().contains(cardAttacked)) {
             out.setError("Attacked card is not of type 'Tank'.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
@@ -88,12 +88,12 @@ public final class MinionAction extends Action {
 
         //check if dead
         if (cardAttacked.getHealth() <= 0) {
-            game.getFrozenCards().remove(cardAttacked);
-            game.getTable().removeCard(cardAttacked);
+            match.getFrozenCards().remove(cardAttacked);
+            match.getTable().removeCard(cardAttacked);
         }
 
         //memorize that attacker attacked
-        game.getAttackedThisTurn().add(cardAttacker);
+        match.getAttackedThisTurn().add(cardAttacker);
     }
 
     /**
@@ -104,15 +104,15 @@ public final class MinionAction extends Action {
 
         int rowAttacker = action.getCardAttacker().getX();
         int colAttacker = action.getCardAttacker().getY();
-        CardInput cardAttacker = game.getTable().getCard(rowAttacker, colAttacker);
+        CardInput cardAttacker = match.getTable().getCard(rowAttacker, colAttacker);
 
-        CardInput hero = game.getOtherPlayer().getHero();
+        CardInput hero = match.getOtherPlayer().getHero();
 
         if (frozenCheck(cardAttacker)) {
             out.setCommand(Constants.USE_ATTACK_HERO);
             out.setCardAttacker(action.getCardAttacker());
             out.setError("Attacker card is frozen.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
@@ -120,7 +120,7 @@ public final class MinionAction extends Action {
             out.setCommand(Constants.USE_ATTACK_HERO);
             out.setCardAttacker(action.getCardAttacker());
             out.setError("Attacker card has already attacked this turn.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
@@ -129,7 +129,7 @@ public final class MinionAction extends Action {
             out.setCommand(Constants.USE_ATTACK_HERO);
             out.setCardAttacker(action.getCardAttacker());
             out.setError("Attacked card is not of type 'Tank'.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
@@ -140,20 +140,20 @@ public final class MinionAction extends Action {
 
         //check if dead
         if (hero.getHealth() <= 0) {
-            if (game.getCurrentPlayer().getPlayerNum() == 1) {
+            if (match.getCurrentPlayer().getPlayerNum() == 1) {
                 out.setGameEnded("Player one killed the enemy hero.");
-                game.getPlayers()[1].setWins(game.getPlayers()[1].getWins() + 1);
+                match.getPlayers()[1].setWins(match.getPlayers()[1].getWins() + 1);
             } else {
                 out.setGameEnded("Player two killed the enemy hero.");
-                game.getPlayers()[2].setWins(game.getPlayers()[2].getWins() + 1);
+                match.getPlayers()[2].setWins(match.getPlayers()[2].getWins() + 1);
             }
 
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
         //memorize that attacker attacked
-        game.getAttackedThisTurn().add(cardAttacker);
+        match.getAttackedThisTurn().add(cardAttacker);
     }
 
     /**
@@ -167,45 +167,45 @@ public final class MinionAction extends Action {
 
         int rowAttacker = action.getCardAttacker().getX();
         int colAttacker = action.getCardAttacker().getY();
-        CardInput cardAttacker = game.getTable().getCard(rowAttacker, colAttacker);
+        CardInput cardAttacker = match.getTable().getCard(rowAttacker, colAttacker);
 
         int rowAttacked = action.getCardAttacked().getX();
         int colAttacked = action.getCardAttacked().getY();
-        CardInput cardAttacked = game.getTable().getCard(rowAttacked, colAttacked);
+        CardInput cardAttacked = match.getTable().getCard(rowAttacked, colAttacked);
 
         if (frozenCheck(cardAttacker)) {
             out.setError("Attacker card is frozen.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
         if (attackedThisTurn(cardAttacker)) {
             out.setError("Attacker card has already attacked this turn.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
         if (cardAttacker.getName().equals(Constants.DISCIPLE)
-                && !cardBelongsToPlayer(cardAttacked, game.getCurrentPlayer())) {
+                && !cardBelongsToPlayer(cardAttacked, match.getCurrentPlayer())) {
             out.setError("Attacked card does not belong to the current player.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
         if ((cardAttacker.getName().equals(Constants.RIPPER)
                 || cardAttacker.getName().equals(Constants.MIRAJ)
                 || cardAttacker.getName().equals(Constants.CURSED))
-                && !cardBelongsToPlayer(cardAttacked, game.getOtherPlayer())) {
+                && !cardBelongsToPlayer(cardAttacked, match.getOtherPlayer())) {
             out.setError("Attacked card does not belong to the enemy.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
         //daca cartea atacata nu e tanc verific daca e vreun tanc
         if (!cardAttacker.getName().equals(Constants.DISCIPLE)
-                && containsTanks() && !game.getTanks().contains(cardAttacked)) {
+                && containsTanks() && !match.getTanks().contains(cardAttacked)) {
             out.setError("Attacked card is not of type 'Tank'.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
@@ -227,12 +227,12 @@ public final class MinionAction extends Action {
         }
 
         if (cardAttacked.getHealth() <= 0) {
-            game.getTable().removeCard(cardAttacked);
-            game.getFrozenCards().remove(cardAttacked);
+            match.getTable().removeCard(cardAttacked);
+            match.getFrozenCards().remove(cardAttacked);
         }
 
         //memorize that attacker attacked
-        game.getAttackedThisTurn().add(cardAttacker);
+        match.getAttackedThisTurn().add(cardAttacker);
     }
 
     /**
@@ -241,7 +241,7 @@ public final class MinionAction extends Action {
      */
     public boolean tankExistsOnRow(final ArrayList<CardInput> row) {
         for (CardInput card : row) {
-            if (game.getTanks().contains(card)) {
+            if (match.getTanks().contains(card)) {
                 return true;
             }
         }
@@ -254,15 +254,15 @@ public final class MinionAction extends Action {
      * @return
      */
     public boolean frozenCheck(final CardInput card) {
-        return game.getFrozenCards().contains(card);
+        return match.getFrozenCards().contains(card);
     }
 
     /**
      * @return
      */
     public boolean containsTanks() {
-        ArrayList<CardInput> cardsOnRow1 = getRow(0, game.getOtherPlayer());
-        ArrayList<CardInput> cardsOnRow2 = getRow(1, game.getOtherPlayer());
+        ArrayList<CardInput> cardsOnRow1 = getRow(0, match.getOtherPlayer());
+        ArrayList<CardInput> cardsOnRow2 = getRow(1, match.getOtherPlayer());
         return (tankExistsOnRow(cardsOnRow1) || tankExistsOnRow(cardsOnRow2));
     }
 
@@ -285,6 +285,6 @@ public final class MinionAction extends Action {
      */
     public ArrayList<CardInput> getRow(final int idx, final Player player) {
         int rowIdx = player.getRowsAssigned().get(idx);
-        return game.getTable().getTable().get(rowIdx);
+        return match.getTable().getTable().get(rowIdx);
     }
 }

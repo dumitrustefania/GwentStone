@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public final class HeroAction extends Action {
     public HeroAction(final Action action) {
-        super(action.action, action.game);
+        super(action.action, action.match);
     }
 
     /**
@@ -38,64 +38,64 @@ public final class HeroAction extends Action {
         out.setCommand(action.getCommand());
         out.setAffectedRow(action.getAffectedRow());
 
-        CardInput hero = game.getCurrentPlayer().getHero();
+        CardInput hero = match.getCurrentPlayer().getHero();
 
-        if (hero.getMana() > game.getCurrentPlayer().getMana()) {
+        if (hero.getMana() > match.getCurrentPlayer().getMana()) {
             out.setError("Not enough mana to use hero's ability.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
         if (attackedThisTurn(hero)) {
             out.setError("Hero has already attacked this turn.");
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
             return;
         }
 
-        ArrayList<CardInput> affectedRow = game.getTable().getTable().get(action.getAffectedRow());
+        ArrayList<CardInput> affectedRow = match.getTable().getTable().get(action.getAffectedRow());
 
         if (hero.getName().equals(Constants.LORD)) {
-            if (!game.getOtherPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
+            if (!match.getOtherPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
                 out.setError("Selected row does not belong to the enemy.");
-                out.appendToArrayNode(game.getOutput());
+                out.appendToArrayNode(match.getOutput());
                 return;
             }
 
-            new LordRoyce(affectedRow, game).useAbility();
+            new LordRoyce(affectedRow, match).useAbility();
         }
 
 
         if (hero.getName().equals(Constants.EMPRESS)) {
-            if (!game.getOtherPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
+            if (!match.getOtherPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
                 out.setError("Selected row does not belong to the enemy.");
-                out.appendToArrayNode(game.getOutput());
+                out.appendToArrayNode(match.getOutput());
                 return;
             }
 
-            new EmpressThorina(affectedRow, game).useAbility();
+            new EmpressThorina(affectedRow, match).useAbility();
         }
 
         if (hero.getName().equals(Constants.KING)) {
-            if (!game.getCurrentPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
+            if (!match.getCurrentPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
                 out.setError("Selected row does not belong to the current player.");
-                out.appendToArrayNode(game.getOutput());
+                out.appendToArrayNode(match.getOutput());
                 return;
             }
 
-            new KingMudface(affectedRow, game).useAbility();
+            new KingMudface(affectedRow, match).useAbility();
         }
 
         if (hero.getName().equals(Constants.GENERAL)) {
-            if (!game.getCurrentPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
+            if (!match.getCurrentPlayer().getRowsAssigned().contains(action.getAffectedRow())) {
                 out.setError("Selected row does not belong to the current player.");
-                out.appendToArrayNode(game.getOutput());
+                out.appendToArrayNode(match.getOutput());
                 return;
             }
 
-            new GeneralKocioraw(affectedRow, game).useAbility();
+            new GeneralKocioraw(affectedRow, match).useAbility();
         }
 
-        game.getAttackedThisTurn().add(hero);
-        game.getCurrentPlayer().setMana(game.getCurrentPlayer().getMana() - hero.getMana());
+        match.getAttackedThisTurn().add(hero);
+        match.getCurrentPlayer().setMana(match.getCurrentPlayer().getMana() - hero.getMana());
     }
 }

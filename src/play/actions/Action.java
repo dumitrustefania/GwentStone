@@ -4,22 +4,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import util.Constants;
 import fileio.ActionsInput;
 import fileio.CardInput;
-import play.Game;
+import play.Match;
 
 /**
  *
  */
 public class Action {
     protected ActionsInput action;
-    protected Game game;
+    protected Match match;
 
-    public Action(final ActionsInput action, final Game game) {
+    public Action(final ActionsInput action, final Match match) {
         this.action = action;
-        this.game = game;
+        this.match = match;
     }
 
-    public Action(final Game game) {
-        this.game = game;
+    public Action(final Match match) {
+        this.match = match;
     }
 
     public Action() {
@@ -57,6 +57,6 @@ public class Action {
      * @return
      */
     public boolean attackedThisTurn(final CardInput card) {
-        return game.getAttackedThisTurn().contains(card);
+        return match.getAttackedThisTurn().contains(card);
     }
 }

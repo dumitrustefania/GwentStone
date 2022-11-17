@@ -1,7 +1,7 @@
 package play.abilities.hero_abilities;
 
 import fileio.CardInput;
-import play.Game;
+import play.Match;
 
 import java.util.ArrayList;
 
@@ -10,11 +10,11 @@ import java.util.ArrayList;
  */
 public abstract class HeroAbility {
     protected ArrayList<CardInput> affectedRow;
-    protected Game game;
+    protected Match match;
 
-    public HeroAbility(final ArrayList<CardInput> affectedRow, final Game game) {
+    public HeroAbility(final ArrayList<CardInput> affectedRow, final Match match) {
         this.affectedRow = affectedRow;
-        this.game = game;
+        this.match = match;
     }
 
     /**

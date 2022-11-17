@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public final class PlayerAction extends Action {
     public PlayerAction(final Action action) {
-        super(action.action, action.game);
+        super(action.action, action.match);
     }
 
     /**
@@ -27,8 +27,8 @@ public final class PlayerAction extends Action {
         if (command.equals(Constants.PLACE_CARD)) {
             out.setHandIdx(action.getHandIdx());
 
-            CardInput card = game.getCurrentPlayer().getHand().get(action.getHandIdx());
-            Player player = game.getCurrentPlayer();
+            CardInput card = match.getCurrentPlayer().getHand().get(action.getHandIdx());
+            Player player = match.getCurrentPlayer();
 
             // if card is env
             if (Constants.ENV_CARDS.contains(card.getName())) {
@@ -47,15 +47,15 @@ public final class PlayerAction extends Action {
                     row = 1 - rowToBePlacedOn;
                 }
 
-                if (game.getTable().getTable().get(row).size() == Constants.MAX_COLS) {
+                if (match.getTable().getTable().get(row).size() == Constants.MAX_COLS) {
                     out.setError("Cannot place card on table since row is full.");
                 } else {
                     if (card.getName().equals(Constants.WARDEN)
                             || card.getName().equals(Constants.GOLIATH)) {
-                        game.getTanks().add(card);
+                        match.getTanks().add(card);
                     }
 
-                    ArrayList<CardInput> rowOnTable = game.getTable().getTable().get(row);
+                    ArrayList<CardInput> rowOnTable = match.getTable().getTable().get(row);
                     rowOnTable.add(card);
                     player.getHand().remove(action.getHandIdx());
                     player.setMana(player.getMana() - card.getMana());
@@ -63,7 +63,7 @@ public final class PlayerAction extends Action {
                 }
             }
 
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
         }
     }
 }

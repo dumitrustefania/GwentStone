@@ -1,7 +1,7 @@
 package play.abilities.environment_abilities;
 
 import fileio.CardInput;
-import play.Game;
+import play.Match;
 import util.JSONout;
 
 import java.util.ArrayList;
@@ -10,21 +10,21 @@ import java.util.ArrayList;
  *
  */
 public final class Winterfell extends EnvironmentAbility {
-    public Winterfell(final ArrayList<CardInput> affectedRow, final Game game,
+    public Winterfell(final ArrayList<CardInput> affectedRow, final Match match,
                       final CardInput envCard, final JSONout out) {
-        super(affectedRow, game, envCard, out);
+        super(affectedRow, match, envCard, out);
     }
 
     //comm
     @Override
     public void useAbility() {
         for (CardInput card : affectedRow) {
-            if (!game.getFrozenCards().contains(card)) {
-                game.getFrozenCards().add(card);
+            if (!match.getFrozenCards().contains(card)) {
+                match.getFrozenCards().add(card);
             }
         }
 
-        game.getCurrentPlayer().getHand().remove(envCard);
-        game.getCurrentPlayer().setMana(game.getCurrentPlayer().getMana() - envCard.getMana());
+        match.getCurrentPlayer().getHand().remove(envCard);
+        match.getCurrentPlayer().setMana(match.getCurrentPlayer().getMana() - envCard.getMana());
     }
 }

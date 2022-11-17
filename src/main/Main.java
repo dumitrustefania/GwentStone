@@ -1,7 +1,7 @@
 package main;
 
 import checker.Checker;
-import play.Play;
+import play.Game;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -69,8 +69,8 @@ public final class Main {
                 Input.class);
         ArrayNode output = objectMapper.createArrayNode();
 
-        Play play = new Play(output);
-        play.play(inputData);
+        Game game = new Game(output);
+        game.playGame(inputData);
 
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         objectWriter.writeValue(new File(filePath2), output);

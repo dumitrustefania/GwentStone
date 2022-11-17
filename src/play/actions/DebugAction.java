@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public final class DebugAction extends Action {
     public DebugAction(final Action action) {
-        super(action.action, action.game);
+        super(action.action, action.match);
     }
 
     /**
@@ -26,52 +26,52 @@ public final class DebugAction extends Action {
 
         if (command.equals(Constants.GET_DECK)) {
             out.setPlayerIdx(action.getPlayerIdx());
-            out.setOutput(game.getPlayers()[action.getPlayerIdx()].getCurrentDeck());
-            out.appendToArrayNode(game.getOutput());
+            out.setOutput(match.getPlayers()[action.getPlayerIdx()].getCurrentDeck());
+            out.appendToArrayNode(match.getOutput());
         }
 
         if (command.equals(Constants.GET_HERO)) {
             out.setPlayerIdx(action.getPlayerIdx());
-            out.setOutput(game.getPlayers()[action.getPlayerIdx()].getHero());
-            out.appendToArrayNode(game.getOutput());
+            out.setOutput(match.getPlayers()[action.getPlayerIdx()].getHero());
+            out.appendToArrayNode(match.getOutput());
         }
 
         if (command.equals(Constants.GET_TURN)) {
-            out.setOutput(game.getCurrentPlayer().getPlayerNum());
-            out.appendToArrayNode(game.getOutput());
+            out.setOutput(match.getCurrentPlayer().getPlayerNum());
+            out.appendToArrayNode(match.getOutput());
         }
 
         if (command.equals(Constants.GET_HAND)) {
             out.setPlayerIdx(action.getPlayerIdx());
-            out.setOutput(game.getPlayers()[action.getPlayerIdx()].getHand());
-            out.appendToArrayNode(game.getOutput());
+            out.setOutput(match.getPlayers()[action.getPlayerIdx()].getHand());
+            out.appendToArrayNode(match.getOutput());
         }
 
         if (command.equals(Constants.GET_MANA)) {
             out.setPlayerIdx(action.getPlayerIdx());
-            out.setOutput(game.getPlayers()[action.getPlayerIdx()].getMana());
-            out.appendToArrayNode(game.getOutput());
+            out.setOutput(match.getPlayers()[action.getPlayerIdx()].getMana());
+            out.appendToArrayNode(match.getOutput());
         }
 
         if (command.equals(Constants.GET_TABLE)) {
-            out.setOutput(game.getTable().getTable());
-            out.appendToArrayNode(game.getOutput());
+            out.setOutput(match.getTable().getTable());
+            out.appendToArrayNode(match.getOutput());
         }
 
         if (command.equals(Constants.GET_GAMES)) {
-            out.setOutput(game.getGamesPlayed());
-            out.appendToArrayNode(game.getOutput());
+            out.setOutput(match.getGamesPlayed());
+            out.appendToArrayNode(match.getOutput());
         }
 
         if (command.equals(Constants.GET_CARD)) {
-            out.setOutput(game.getTable().getCard(action.getX(), action.getY()));
-            out.appendToArrayNode(game.getOutput());
+            out.setOutput(match.getTable().getCard(action.getX(), action.getY()));
+            out.appendToArrayNode(match.getOutput());
         }
 
         if (command.equals(Constants.GET_ENV)) {
             out.setPlayerIdx(action.getPlayerIdx());
 
-            Player player = game.getPlayers()[action.getPlayerIdx()];
+            Player player = match.getPlayers()[action.getPlayerIdx()];
             ArrayList<CardInput> envCards = new ArrayList<CardInput>();
 
             for (CardInput card : player.getHand()) {
@@ -81,22 +81,22 @@ public final class DebugAction extends Action {
             }
 
             out.setOutput(envCards);
-            out.appendToArrayNode(game.getOutput());
+            out.appendToArrayNode(match.getOutput());
         }
 
         if (command.equals(Constants.GET_FROZEN)) {
-            out.setOutput(game.getFrozenCards());
-            out.appendToArrayNode(game.getOutput());
+            out.setOutput(match.getFrozenCards());
+            out.appendToArrayNode(match.getOutput());
         }
 
         if (command.equals(Constants.GET_WINS_ONE)) {
-            out.setOutput(game.getPlayers()[1].getWins());
-            out.appendToArrayNode(game.getOutput());
+            out.setOutput(match.getPlayers()[1].getWins());
+            out.appendToArrayNode(match.getOutput());
         }
 
         if (command.equals(Constants.GET_WINS_TWO)) {
-            out.setOutput(game.getPlayers()[2].getWins());
-            out.appendToArrayNode(game.getOutput());
+            out.setOutput(match.getPlayers()[2].getWins());
+            out.appendToArrayNode(match.getOutput());
         }
     }
 }
