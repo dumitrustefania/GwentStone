@@ -7,7 +7,8 @@ import fileio.CardInput;
 import play.Match;
 
 /**
- *
+ * Action class is the first to process each action and redirect it
+ * based on its command name.
  */
 public class Action {
     protected ActionsInput action;
@@ -18,14 +19,9 @@ public class Action {
         this.match = match;
     }
 
-    public Action(final Match match) {
-        this.match = match;
-    }
-
-    public Action() {
-    }
-
     /**
+     * Check the command name of the action and create the necessary
+     * object for executing it.
      * @throws JsonProcessingException
      */
     public void performAction() throws JsonProcessingException {
@@ -53,6 +49,7 @@ public class Action {
     }
 
     /**
+     * Return true if input card already attacked this turn.
      * @param card
      * @return
      */

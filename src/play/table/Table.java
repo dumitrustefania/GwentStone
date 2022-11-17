@@ -5,17 +5,18 @@ import fileio.CardInput;
 
 import java.util.ArrayList;
 
-/**
- *
- */
 public final class Table {
-    private ArrayList<ArrayList<CardInput>> table;
+    // the table has a matrix structure
+    private final ArrayList<ArrayList<CardInput>> table;
 
+    /**
+     * Table constructor that allocates memory for the table
+     * and for each row of the table.
+     */
     public Table() {
         table = new ArrayList<ArrayList<CardInput>>();
         for (int row = 0; row < Constants.MAX_ROWS; row++) {
-            ArrayList<CardInput> rowOnTable = new ArrayList<CardInput>();
-            table.add(rowOnTable);
+            table.add(new ArrayList<CardInput>());
         }
     }
 
@@ -24,6 +25,7 @@ public final class Table {
     }
 
     /**
+     * Return the card on given row and column.
      * @param row
      * @param col
      * @return
@@ -33,6 +35,7 @@ public final class Table {
     }
 
     /**
+     * Remove the card from a given row and column.
      * @param card
      */
     public void removeCard(final CardInput card) {

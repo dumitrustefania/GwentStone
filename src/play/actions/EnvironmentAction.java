@@ -11,7 +11,8 @@ import util.JSONout;
 import java.util.ArrayList;
 
 /**
- *
+ * DebugAction class is used for performing specific actions
+ * of the environment cards.
  */
 public final class EnvironmentAction extends Action {
     public EnvironmentAction(final Action action) {
@@ -19,6 +20,7 @@ public final class EnvironmentAction extends Action {
     }
 
     /**
+     * Check the command name and execute the necessary steps accordingly.
      * @throws JsonProcessingException
      */
     public void performAction() throws JsonProcessingException {
@@ -30,6 +32,9 @@ public final class EnvironmentAction extends Action {
     }
 
     /**
+     * Execute the environment card's ability.
+     * First check whether the command is a valid one.
+     * Then perform the ability.
      * @throws JsonProcessingException
      */
     public void useCardAbility() throws JsonProcessingException {
@@ -38,6 +43,7 @@ public final class EnvironmentAction extends Action {
         out.setHandIdx(action.getHandIdx());
         out.setAffectedRow(action.getAffectedRow());
 
+        // get the attacker card
         CardInput envCard = match.getCurrentPlayer().getHand().get(action.getHandIdx());
 
         if (!Constants.ENV_CARDS.contains(envCard.getName())) {
@@ -58,8 +64,11 @@ public final class EnvironmentAction extends Action {
             return;
         }
 
+        // get the affected row
         ArrayList<CardInput> affectedRow = match.getTable().getTable().get(action.getAffectedRow());
 
+        // create specific objects based on the card's type
+        // and perform its ability
         if (envCard.getName().equals(Constants.FIRESTORM)) {
             new Firestorm(affectedRow, match, envCard, out).useAbility();
         }

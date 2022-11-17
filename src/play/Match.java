@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.Random;
 
 /**
- *
+ * The Match class contains all the data about the current match.
  */
 public class Match extends Game {
     private final GameInput game;
@@ -29,34 +29,48 @@ public class Match extends Game {
     private Player otherPlayer;
 
     /**
+     * Start the match by assigning the requested decks to the players and shuffling them
+     * and assigning the picked hero.
+     * Then, playing the rounds starts.
      * @throws JsonProcessingException
      */
-    public void startGame() throws JsonProcessingException {
+    public void startMatch() throws JsonProcessingException {
+        // initialize each player's fields for preparing the start
+        players[1].initPlayer();
+        players[2].initPlayer();
+
+        // set decks
         players[1].setCurrentDeck(game.getStartGame().getPlayerOneDeckIdx());
         players[2].setCurrentDeck(game.getStartGame().getPlayerTwoDeckIdx());
 
+        // shuffle decks
         int seed = game.getStartGame().getShuffleSeed();
-
         Collections.shuffle(players[1].getCurrentDeck(), new Random(seed));
         Collections.shuffle(players[2].getCurrentDeck(), new Random(seed));
 
+        // set heroes
         players[1].setHero(game.getStartGame().getPlayerOneHero());
         players[2].setHero(game.getStartGame().getPlayerTwoHero());
 
+        // start playing the game
         playRounds();
     }
 
     /**
+     * Set up the player who starts at the beginning of each round.
+     * Play round by round until reaching the end of the actions ArrayList.
      * @throws JsonProcessingException
      */
     public void playRounds() throws JsonProcessingException {
+        // determine the starting player
         int firstPlayerNum = game.getStartGame().getStartingPlayer();
         int secondPlayerNum = 3 - firstPlayerNum;
 
         Player firstPlayer = players[firstPlayerNum];
         Player secondPlayer = players[secondPlayerNum];
 
-        while (true) {
+        // play round by round
+        do {
             roundsPlayed++;
 
             // add mana
@@ -71,22 +85,19 @@ public class Match extends Game {
             //first player's turn
             currentPlayer = firstPlayer;
             otherPlayer = secondPlayer;
-
             playTurn(currentPlayer);
 
-            //2nd player's turn
+            //second player's turn
             this.currentPlayer = secondPlayer;
             this.otherPlayer = firstPlayer;
-
             playTurn(currentPlayer);
 
-            if (currActionIdx == game.getActions().size()) {
-                break;
-            }
-        }
+        } while (currActionIdx != game.getActions().size());
     }
 
     /**
+     * Play a player's turn until reaching the "endPlayerTurn" command.
+     * Create a new action object for each action in the list and perform the action.
      * @param player
      * @throws JsonProcessingException
      */
@@ -100,11 +111,13 @@ public class Match extends Game {
                 currActionIdx++;
                 break;
             }
+
             Action newAction = new Action(action, this);
             newAction.performAction();
             currActionIdx++;
         }
 
+        // when a player's turn ends, reinitialise its frozen card and its attackers
         unfreezeAndReinitCards(currentPlayer);
     }
 
@@ -129,10 +142,10 @@ public class Match extends Game {
     }
 
     public Match(final GameInput game, final Player[] players,
-                 final int gamesPlayed, final ArrayNode output) {
+                 final int matchesPlayed, final ArrayNode output) {
         this.game = game;
         this.players = players;
-        this.gamesPlayed = gamesPlayed;
+        this.matchesPlayed = matchesPlayed;
         this.output = output;
     }
 
