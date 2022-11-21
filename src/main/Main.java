@@ -1,7 +1,7 @@
 package main;
 
 import checker.Checker;
-import play.Game;
+import game.Game;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
